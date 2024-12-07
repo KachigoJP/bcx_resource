@@ -1,0 +1,102 @@
+/users:
+  get:
+    summary: Get all users
+    description: Returns a list of users.
+    security:
+      - api_key: []
+    responses:
+      200:
+        description: List of users.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './schemas/user.yaml#/User'
+  post:
+    summary: Create a new user
+    description: Adds a new user to the system.
+    security:
+      - api_key: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/user.yaml#/User'
+    responses:
+      201:
+        description: User created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/user.yaml#/User'
+/users/{id}:
+  get:
+    summary: Get a user by ID
+    description: Retrieves a user's details.
+    security:
+      - api_key: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        description: User details.
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/user.yaml#/User'
+      404:
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/common.yaml#/ErrorResponse'
+  put:
+    summary: Update a user by ID
+    description: Updates an existing user's information.
+    security:
+      - api_key: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/user.yaml#/User'
+    responses:
+      200:
+        description: User updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/user.yaml#/User'
+  delete:
+    summary: Delete a user by ID
+    description: Deletes a user from the system.
+    security:
+      - api_key: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      204:
+        description: User deleted successfully.
+      404:
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/common.yaml#/ErrorResponse'

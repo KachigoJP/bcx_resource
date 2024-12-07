@@ -13,22 +13,13 @@ variable "db_instance_name" {
   type        = string
 }
 
-variable "db_username" {
-  description = "Root username for the Cloud SQL instance"
+variable "db_connection_name" {
+  description = "Cloud SQL connection name"
   type        = string
 }
 
-variable "db_password" {
+variable "keycloak_password" {
   description = "Root password for the Cloud SQL instance"
   type        = string
-}
-
-variable "db_disk_size" {
-  description = "Disk size in GB for Cloud SQL"
-  type        = number
-}
-
-variable "vpc_id" {
-  description = "ID of the VPC network"
-  type        = string
+  sensivite   = true
 }

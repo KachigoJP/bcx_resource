@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Banchanxanh API
+  description: Ban Chan Xanh API Gateway
+  version: 1.0.0
+servers:
+  - url: https://api.banchanxanh.com
+    description: GCP API Gateway URL
+security:
+  - api_key: []
+
+paths:
+  /:
+    get:
+      x-google-backend:
+        address: "http://<INTERNAL_LB_IP>:80" # Replace with the internal load balancer IP
+      responses:
+        '200':
+          description: "Successful response"
+  $ref: './paths/user-apis.yaml'
+  /your-api:
+    get:
+      security:
+        - keycloakAuth: []
+      responses:
+        200:
+          description: "Successful Response"
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    $ref: './schemas/common.yaml#/ErrorResponse'
+
+securityDefinitions:
+  keycloakAuth:
+    type: oauth2
+    flow: "accessCode"
+    authorizationUrl: "http://keycloak-lb.internal/auth/realms/<your-realm>/protocol/openid-connect/auth"
+    tokenUrl: "http://keycloak-lb.internal/auth/realms/<your-realm>/protocol/openid-connect/token"
+    scopes:
+      read: "Grants read access"
+      write: "Grants write access"

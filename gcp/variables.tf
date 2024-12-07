@@ -16,20 +16,36 @@ variable "openapi_file" {
 variable "cluster_name" {
   description = "Kubernetes cluster name"
   type        = string
-  default     = "microservices-cluster"
+  default     = "bcx-cluster"
 }
 
-variable "bucket_name" {
-  description = "Cloud Functions storage bucket name"
+variable "db_instance_name" {
+  description = "Cloud SQL instance name"
   type        = string
+  default     = "bcx-sql-instance"
 }
 
-variable "function_name" {
-  description = "Cloud Function name"
+variable "db_username" {
+  description = "Username for the Cloud SQL instance"
   type        = string
+  sensitive   = true
 }
 
-variable "source_archive" {
-  description = "Path to the Cloud Function source archive"
+variable "db_password" {
+  description = "Password for the Cloud SQL instance"
   type        = string
+  sensitive   = true
+}
+
+variable "db_disk_size" {
+  description = "Disk size in GB for Cloud SQL"
+  type        = number
+  default     = 10 # Free-tier eligible
+}
+
+
+variable "k8s_disk_size" {
+  description = "Disk size in GB for Kubernetes"
+  type        = number
+  default     = 10 # Free-tier eligible
 }

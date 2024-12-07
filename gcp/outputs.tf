@@ -10,6 +10,10 @@ output "kubernetes_cluster" {
   value = module.kubernetes.cluster_endpoint
 }
 
-output "cloud_function_endpoint" {
-  value = module.cloud_functions.function_endpoint
+output "cloud_sql_instance" {
+  value = module.cloud_sql.instance_name
+}
+
+output "cloud_sql_connection_name" {
+  value = module.cloud_sql.connection_name
 }
