@@ -1,13 +1,9 @@
 
 
 module "vpc" {
-  source      = "./modules/vpc"
+  source        = "./modules/vpc"
   region        = var.region
-}
-
-module "identity_platform" {
-  source = "./modules/identity-platform"
-  project_id = var.project_id
+  network_name  = var.network_name
 }
 
 module "api_gateway" {
@@ -27,7 +23,7 @@ module "cloud_sql" {
   db_username       = var.db_username
   db_password       = var.db_password
   db_disk_size      = var.db_disk_size
-  vpc_id            = module.vpc.network_id
+  network_name      = var.network_name
 }
 
 module "kubernetes" {

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:latest
+          envFrom:
+            - configMapRef:
+                name: keycloak-config
+            - secretRef:
+                name: keycloak-db-secret
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - mountPath: /opt/keycloak/data
+              name: keycloak-data
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.33.3
+          args:
+            - /cloud_sql_proxy
+            - -instances=your-project-id:your-region:your-instance-id=tcp:5432
+          ports:
+            - containerPort: 5432
+          securityContext:
+            runAsNonRoot: true
+          volumeMounts:
+            - name: service-account
+              mountPath: /secrets
+              readOnly: true
+      volumes:
+        - name: keycloak-data
+          persistentVolumeClaim:
+            claimName: keycloak-pvc
+        - name: service-account
+          secret:
+            secretName: gcp-sa-key

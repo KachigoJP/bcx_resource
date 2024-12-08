@@ -1,0 +1,12 @@
+# ConfigMap for Keycloak
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-config
+  namespace: keycloak
+data:
+  KEYCLOAK_USER: admin
+  DB_VENDOR: postgres
+  DB_ADDR: 127.0.0.1
+  DB_DATABASE: keycloak
+  DB_USER: sql_user

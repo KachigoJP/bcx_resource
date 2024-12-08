@@ -24,6 +24,7 @@ resource "google_container_cluster" "gke_cluster" {
   name     = var.cluster_name
   location = var.region
   initial_node_count = 1
+  remove_default_node_pool = true
 
   networking_mode = "VPC_NATIVE"
   network         = var.vpc_self_link
@@ -42,8 +43,8 @@ resource "google_container_cluster" "gke_cluster" {
 
   master_authorized_networks_config {   # Enable and define authorized networks
     cidr_blocks {
-      cidr_block   = "203.0.113.0/24"
-      display_name = "Office Network"
+      cidr_block   = "10.239.0.0/24"
+      display_name = "GCP Network"
     }
   }
 
@@ -53,95 +54,67 @@ resource "google_container_cluster" "gke_cluster" {
     }
   }
 
-  node_config {
-    machine_type = "e2-micro"
-    disk_size_gb = var.disk_size
-    disk_type    = "pd-ssd"
-  }
+  # node_config {
+  #   machine_type = "e2-micro"
+  #   disk_size_gb = var.disk_size
+  #   disk_type    = "pd-ssd"
+  # }
 }
+
+# data "google_container_cluster" "primary" {
+#   name     = var.cluster_name
+#   location = var.region
+# }
+
+# data "google_client_config" "default" {}
+
+# provider "kubernetes" {
+#   host                   = "https://${google_container_cluster.gke_cluster.endpoint}"
+#   token                  = data.google_client_config.default.access_token
+#   cluster_ca_certificate = base64decode(google_container_cluster.gke_cluster.master_auth[0].cluster_ca_certificate)
+
+#   ignore_annotations = [
+#     "^autopilot\\.gke\\.io\\/.*",
+#     "^cloud\\.google\\.com\\/.*"
+#   ]
+# }
+
 
 # Kubernetes ConfigMap for Non-Sensitive Data
-resource "kubernetes_config_map" "db_config" {
-  metadata {
-    name = "db-config"
-  }
+# resource "kubernetes_config_map" "db_config" {
+#   metadata {
+#     name = "db-config"
+#   }
 
-  data = {
-    DB_HOST = var.db_host
-  }
-}
-
-# Kubernetes Secret for Sensitive Data
-resource "kubernetes_secret" "db_credentials" {
-  metadata {
-    name = "db-credentials"
-  }
-
-  data = {
-    DB_USER     = base64encode(var.db_username)
-    DB_PASSWORD = base64encode(var.db_password)
-  }
-}
-
-# resource "google_container_node_pool" "public_node_pool" {
-#   name       = "public-node-pool"
-#   cluster    = google_container_cluster.gke_cluster.name
-#   location   = var.region
-#   initial_node_count = 1
-
-#   node_config {
-#     machine_type = "e2-micro"
-#     disk_size_gb = var.disk_size
-#     tags         = ["public-access"]
-
-#     metadata = {
-#       disable-legacy-endpoints = "true"
-#     }
+#   data = {
+#     DB_HOST = var.db_host
 #   }
 # }
 
-# resource "google_container_node_pool" "private_node_pool" {
-#   name       = "private-node-pool"
-#   cluster    = google_container_cluster.gke_cluster.name
-#   location   = var.region
-#   initial_node_count = 1
+# # Kubernetes Secret for Sensitive Data
+# resource "kubernetes_secret" "db_credentials" {
+#   metadata {
+#     name = "db-credentials"
+#   }
 
-#   node_config {
-#     machine_type = "e2-micro"
-#     disk_size_gb = var.disk_size
-#     tags         = ["private-access"]
-#     oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-
-#     metadata = {
-#       disable-legacy-endpoints = "true"
-#     }
+#   data = {
+#     DB_USER     = base64encode(var.db_username)
+#     DB_PASSWORD = base64encode(var.db_password)
 #   }
 # }
 
-data "google_container_cluster" "primary" {
-  name     = google_container_cluster.gke_cluster.name
-  location = var.region
-}
-
-data "google_client_config" "current" {}
-
-provider "kubernetes" {
-  host = data.google_container_cluster.primary.endpoint
-  cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
-  token                  = data.google_client_config.current.access_token
-}
 
 # Read and apply each YAML file as a kubernetes_manifest resource
-data "local_file" "yaml_files" {
-  for_each = fileset("${path.module}/config", "**/*.yaml")
-  filename = "${path.module}/config/${each.value}"
-}
+# data "local_file" "yaml_files" {
+#   for_each = fileset("${path.module}/config", "**/*.yaml")
+#   filename = "${path.module}/config/${each.value}"
+# }
 
 # Apply YAML manifests to the Kubernetes cluster
-#resource "kubernetes_manifest" "apply" {
+# resource "kubernetes_manifest" "apply" {
 #  for_each = {
 #    for key, value in data.local_file.yaml_files :
 #    key => yamldecode(value.content)
 #  }
 #  manifest = each.value
-#}
+# }

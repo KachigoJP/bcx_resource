@@ -43,9 +43,13 @@ variable "db_disk_size" {
   default     = 10 # Free-tier eligible
 }
 
-
 variable "k8s_disk_size" {
   description = "Disk size in GB for Kubernetes"
   type        = number
   default     = 10 # Free-tier eligible
+}
+
+variable "network_name" {
+  description = "GCP project Network name"
+  type        = string
 }

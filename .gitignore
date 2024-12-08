@@ -2,3 +2,4 @@
 .terraform
 .terraform.*.*
 gcp-key.json
+secret.yaml

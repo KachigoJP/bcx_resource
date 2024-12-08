@@ -28,7 +28,7 @@ variable "db_disk_size" {
   type        = number
 }
 
-variable "vpc_id" {
-  description = "ID of the VPC network"
+variable "network_name" {
+  description = "GCP project Network name"
   type        = string
 }

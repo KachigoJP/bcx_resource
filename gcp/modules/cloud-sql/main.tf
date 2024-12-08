@@ -15,10 +15,20 @@ resource "google_sql_database_instance" "cloud_sql_instance" {
     backup_configuration {
       enabled = false # Disable backups to avoid storage charges
     }
+
+    database_flags {
+      name  = "log_statement"
+      value = "all"
+    }
+
+    database_flags {
+      name  = "log_min_duration_statement"
+      value = "1000" # Logs queries taking longer than 1000 ms
+    }
   
     ip_configuration {
       ipv4_enabled = false # Disable Public IP
-      private_network = var.vpc_id # Attach to VPC
+      private_network = "projects/${var.project_id}/global/networks/${var.network_name}"
     }
   }
 }
