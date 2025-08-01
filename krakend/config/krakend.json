@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "name": "krakend",
+  "port": 8080,
+  "timeout": "3000ms",
+  "endpoints": [
+    {
+      "endpoint": "/example",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/api/example",
+          "host": [
+            "http://example-backend:8080"
+          ]
+        }
+      ]
+    }
+  ],
+  "extra_config": {
+    "http": {
+      "timeout": "5s"
+    }
+  }
+}

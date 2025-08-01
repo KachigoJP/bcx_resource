@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: krakend-config
+  namespace: default
+data:
+  krakend.json: |
+    {
+      "version": 2,
+      "name": "krakend",
+      "endpoints": [
+        {
+          "endpoint": "/example",
+          "method": "GET",
+          "backend": [
+            {
+              "host": ["http://example-backend"],
+              "url_pattern": "/"
+            }
+          ]
+        }
+      ],
+      "extra_config": {
+        "debug": true
+      }
+    }
