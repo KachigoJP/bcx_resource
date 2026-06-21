@@ -1,24 +1,70 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: private-ingress
-  namespace: banchanxanh
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
+  name: private-ingress
+  namespace: default
 spec:
+  ingressClassName: nginx
   tls:
-    - hosts:
-        - keycloak.local # Replace with your domain
-      secretName: keycloak-tls-secret # Cert-Manager will manage this secret
+  - hosts:
+    - banchanxanh.com
+    - cms.banchanxanh.com
+    - keycloak.banchanxanh.com
+    - dev.banchanxanh.com
+    - dev.cms.banchanxanh.com
+    secretName: banchanxanh-tls-secret
   rules:
-    - host: keycloak.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak-service
-                port:
-                  number: 80
+  - host: banchanxanh.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: bcx-hp-host-service-prod
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: keycloak.banchanxanh.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: keycloak-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: dev.banchanxanh.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: bcx-hp-host-service-dev
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: cms.banchanxanh.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: bcx-strapi-service-prod
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: dev.cms.banchanxanh.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: bcx-strapi-service-dev
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

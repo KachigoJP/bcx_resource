@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bcx-hp-host
+  labels:
+    app: bcx-hp-host
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bcx-hp-host
+  template:
+    metadata:
+      labels:
+        app: bcx-hp-host
+    spec:
+      containers:
+      - name: bcx-hp-host
+        image: us-central1-docker.pkg.dev/banchanxanh/bcx-hp-host:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: bcx-hp-host-config
+        - secretRef:
+            name: bcx-hp-host-secret
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 300m
+            memory: 512Mi

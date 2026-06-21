@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bcx-strapi-config
+data:
+  NODE_ENV: "<environment_here>"
+  DATABASE_CLIENT: "<database_client_here>"
+  DATABASE_HOST: "<database_host_here>"
+  DATABASE_NAME: "<database_name_here>"
+  DATABASE_PORT: "<database_port_here>"
+  HOST: "<host_here>"
+  PORT: "<port_here>"

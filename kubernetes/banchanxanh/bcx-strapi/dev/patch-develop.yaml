@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bcx-strapi
+spec:
+  template:
+    spec:
+      containers:
+      - name: bcx-strapi
+        envFrom:
+        - configMapRef:
+            name: bcx-strapi-config-dev
+        - secretRef:
+            name: bcx-strapi-secret-dev

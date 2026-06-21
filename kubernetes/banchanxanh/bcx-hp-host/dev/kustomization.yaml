@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../base
+- config.yaml
+- secret.yaml
+
+nameSuffix: -dev
+
+images:
+- name: us-central1-docker.pkg.dev/banchanxanh/bcx-hp-host
+  newName: us-central1-docker.pkg.dev/banchanxanh/develop/bcx-hp-host-1.0.0
+  newTag: "20260610073924"
