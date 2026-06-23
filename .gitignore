@@ -3,7 +3,3 @@
 .terraform.*.*
 gcp-key.json
 secret.yaml
-kubernetes/banchanxanh/bcx-strapi/dev/config.yaml
-kubernetes/banchanxanh/bcx-strapi/prod/config.yaml
-kubernetes/banchanxanh/bcx-hp-host/dev/config.yaml
-kubernetes/banchanxanh/bcx-hp-host/prod/config.yaml

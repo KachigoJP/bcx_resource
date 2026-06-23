@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bcx-hp-host-config
+data:
+  NODE_ENV: "development"
+  NEXT_PUBLIC_STRAPI_URL: "https://dev.cms.banchanxanh.com"
+  NEXT_PUBLIC_API_TIMEOUT: "10000"
+  NEXT_PUBLIC_SKELETON_TIMEOUT: "5000"
+  NEXT_PUBLIC_LOG_LEVEL: "DEBUG"
+  GOOGLE_EMAIL: "banchanxanh.jp@gmail.com"
+  GOOGLE_CLIENT_ID: "596939876280-s53h21hjlvt15icer6e9mnprkh17qv8r.apps.googleusercontent.com"
