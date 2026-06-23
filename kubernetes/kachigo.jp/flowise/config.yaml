@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flowise-config
+  namespace: default
+data:
+  PORT: "3000"
+  APP_URL: https://flowise.kachigo.jp
+  CORS_ORIGINS: https://flowise.kachigo.jp
+  IFRAME_ORIGINS: https://flowise.kachigo.jp
+  NUMBER_OF_PROXIES: "1"
+  TRUST_PROXY: "true"
+  SECURE_COOKIES: "true"
+  DISABLE_FLOWISE_TELEMETRY: "true"
+  LOG_LEVEL: info
+  DATABASE_TYPE: postgres
+  DATABASE_HOST: cloudsql-proxy
+  DATABASE_PORT: "5432"
+  DATABASE_NAME: flowise
+  DATABASE_USER: flowise-user
+  DATABASE_SSL: "false"
+  STORAGE_TYPE: s3
+  S3_STORAGE_BUCKET_NAME: replace-with-b2-bucket-name
+  S3_STORAGE_REGION: replace-with-b2-region
+  S3_ENDPOINT_URL: https://s3.replace-with-b2-region.backblazeb2.com
+  S3_FORCE_PATH_STYLE: "true"
+  JWT_ISSUER: Flowise
+  JWT_AUDIENCE: Flowise
+  JWT_TOKEN_EXPIRY_IN_MINUTES: "360"
+  JWT_REFRESH_TOKEN_EXPIRY_IN_MINUTES: "43200"

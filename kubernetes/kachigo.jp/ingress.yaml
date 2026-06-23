@@ -12,6 +12,7 @@ spec:
   tls:
   - hosts:
     - n8n.kachigo.jp
+    - flowise.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -22,5 +23,15 @@ spec:
         backend:
           service:
             name: n8n-service
+            port:
+              number: 80
+  - host: flowise.kachigo.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flowise-service
             port:
               number: 80

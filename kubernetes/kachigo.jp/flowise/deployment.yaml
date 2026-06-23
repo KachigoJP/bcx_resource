@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flowise
+  namespace: default
+  labels:
+    app: flowise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flowise
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: flowise
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: flowise
+        image: flowiseai/flowise:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/sh
+        - -c
+        args:
+        - sleep 3; flowise start
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: flowise-config
+        - secretRef:
+            name: flowise-secret
+        readinessProbe:
+          httpGet:
+            path: /api/v1/ping
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /api/v1/ping
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 6
+        startupProbe:
+          httpGet:
+            path: /api/v1/ping
+            port: http
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
