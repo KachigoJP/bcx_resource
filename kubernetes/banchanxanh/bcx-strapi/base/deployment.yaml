@@ -19,7 +19,7 @@ spec:
         image: us-central1-docker.pkg.dev/banchanxanh/bcx-strapi:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: 1337
           protocol: TCP
         envFrom:
         - configMapRef:
@@ -28,8 +28,8 @@ spec:
             name: bcx-strapi-secret
         resources:
           limits:
-            cpu: 250m
-            memory: 256Mi
+            cpu: 500m
+            memory: 1024Mi
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 300m
+            memory: 512Mi

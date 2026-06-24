@@ -11,4 +11,4 @@ nameSuffix: -prod
 images:
 - name: us-central1-docker.pkg.dev/banchanxanh/bcx-strapi
   newName: us-central1-docker.pkg.dev/banchanxanh/prod/bcx-strapi-1.0.0
-  newTag: "20260610073924"
+  newTag: "20260624022059"
