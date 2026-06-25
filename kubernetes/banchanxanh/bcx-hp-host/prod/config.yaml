@@ -5,6 +5,7 @@ metadata:
 data:
   NODE_ENV: "production"
   NEXT_PUBLIC_STRAPI_URL: "https://cms.banchanxanh.com"
+  NEXT_PUBLIC_STRAPI_MEDIA_URL: "https://cdn.banchanxanh.com/banchanxanh"
   NEXT_PUBLIC_API_TIMEOUT: "10000"
   NEXT_PUBLIC_SKELETON_TIMEOUT: "5000"
   NEXT_PUBLIC_LOG_LEVEL: "WARN"
