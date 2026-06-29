@@ -22,7 +22,7 @@ data:
   STORAGE_TYPE: s3
   S3_STORAGE_BUCKET_NAME: 'kachigo-flowise'
   S3_STORAGE_REGION: 'us-east-005'
-  S3_ENDPOINT_URL: https://s3.us-east-005.backblazeb2.com
+  S3_ENDPOINT_URL: https://backblaze.kachigo.jp
   S3_FORCE_PATH_STYLE: "true"
   JWT_ISSUER: Flowise
   JWT_AUDIENCE: Flowise

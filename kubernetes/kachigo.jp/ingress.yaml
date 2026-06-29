@@ -6,13 +6,17 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - n8n.kachigo.jp
     - flowise.kachigo.jp
+    - browserless.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -35,3 +39,13 @@ spec:
             name: flowise-service
             port:
               number: 80
+  - host: browserless.kachigo.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: browserless-service
+            port:
+              number: 3000

@@ -1,0 +1,9 @@
+# Project-scoped Codex configuration.
+# Replace the URL with the MCP endpoint exposed by your Flowise instance.
+
+[mcp_servers.flowise]
+url = "http://localhost:3000/mcp"
+
+# If your Flowise MCP endpoint requires a bearer token, uncomment this line
+# and export FLOWISE_API_KEY before starting Codex.
+# bearer_token_env_var = "FLOWISE_API_KEY"

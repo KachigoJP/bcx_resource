@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: browserless-config
+  namespace: default
+  labels:
+    app: browserless
+data:
+  HOST: "0.0.0.0"
+  PORT: "3000"
+  EXTERNAL: "https://browserless.kachigo.jp"
+  TZ: "Asia/Tokyo"
+  CONCURRENT: "2"
+  QUEUED: "10"
+  TIMEOUT: "240000"
+  HEALTH: "true"
+  MAX_CPU_PERCENT: "85"
+  MAX_MEMORY_PERCENT: "85"
+  ENABLE_DEBUGGER: "true"
