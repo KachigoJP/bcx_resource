@@ -14,9 +14,6 @@ spec:
   - hosts:
     - banchanxanh.com
     - cms.banchanxanh.com
-    - keycloak.banchanxanh.com
-    - dev.banchanxanh.com
-    - dev.cms.banchanxanh.com
     secretName: banchanxanh-tls-secret
   rules:
   - host: banchanxanh.com
@@ -29,42 +26,12 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-  - host: keycloak.banchanxanh.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: keycloak-service
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
-  - host: dev.banchanxanh.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: bcx-hp-host-service-dev
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
   - host: cms.banchanxanh.com
     http:
       paths:
       - backend:
           service:
             name: bcx-strapi-service-prod
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
-  - host: dev.cms.banchanxanh.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: bcx-strapi-service-dev
             port:
               number: 80
         path: /

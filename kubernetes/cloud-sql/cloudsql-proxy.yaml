@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudsql-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudsql-proxy
+  template:
+    metadata:
+      labels:
+        app: cloudsql-proxy
+    spec:
+      containers:
+        - name: cloudsql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2
+          args:
+            - "--address=0.0.0.0"
+            - "--port=5432"
+            - "--credentials-file=/secrets/key.json"
+            - "banchanxanh:us-central1:bcx-sql-instance"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: cloudsql-proxy-sa-key
+              mountPath: /secrets
+              readOnly: true
+      volumes:
+        - name: cloudsql-proxy-sa-key
+          secret:
+            secretName: cloudsql-proxy-sa-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudsql-proxy
+spec:
+  selector:
+    app: cloudsql-proxy
+  ports:
+    - port: 5432
+      targetPort: 5432

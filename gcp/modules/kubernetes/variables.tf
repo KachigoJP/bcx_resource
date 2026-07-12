@@ -8,14 +8,21 @@ variable "region" {
   type        = string
 }
 
-variable "cluster_name" {
-  description = "Name of the Kubernetes cluster"
+variable "cluster_location" {
+  description = "GKE cluster location. Use a zone like us-central1-a for a zonal Standard cluster."
   type        = string
 }
 
-variable "disk_size" {
-  description = "Size of Dict for 1 Node"
+variable "cluster_name" {
+  description = "Name of the Kubernetes cluster"
   type        = string
+  default     = "bcx-cluster"
+}
+
+variable "disk_size" {
+  description = "Boot disk size in GB for each GKE node"
+  type        = number
+  default     = 10
 }
 
 variable "vpc_id" {
@@ -28,18 +35,20 @@ variable "vpc_self_link" {
   type        = string
 }
 
-
-variable "db_host" {
-  description = "Host of Database"
+variable "node_machine_type" {
+  description = "Machine type for the primary node pool"
   type        = string
+  default     = "e2-standard-2"
 }
 
-variable "db_username" {
-  description = "Root username for the Cloud SQL instance"
+variable "node_disk_type" {
+  description = "Boot disk type for each GKE node"
   type        = string
+  default     = "pd-standard"
 }
 
-variable "db_password" {
-  description = "Root password for the Cloud SQL instance"
-  type        = string
+variable "node_locations" {
+  description = "Additional zones where GKE nodes should run. Leave empty for a single-zone cluster."
+  type        = list(string)
+  default     = []
 }

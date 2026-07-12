@@ -1,9 +1,0 @@
-ErrorResponse:
-  type: object
-  properties:
-    message:
-      type: string
-      example: "An error occurred"
-    code:
-      type: integer
-      example: 400

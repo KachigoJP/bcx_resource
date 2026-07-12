@@ -49,3 +49,13 @@ spec:
             name: browserless-service
             port:
               number: 3000
+  - host: keycloak.kachigo.jp
+    http:
+      paths:
+      - backend:
+          service:
+            name: keycloak-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
