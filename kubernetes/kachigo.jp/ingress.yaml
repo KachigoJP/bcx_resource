@@ -17,6 +17,7 @@ spec:
     - n8n.kachigo.jp
     - flowise.kachigo.jp
     - browserless.kachigo.jp
+    - directus.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -49,6 +50,16 @@ spec:
             name: browserless-service
             port:
               number: 3000
+  - host: directus.kachigo.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: directus-service
+            port:
+              number: 80
   - host: keycloak.kachigo.jp
     http:
       paths:

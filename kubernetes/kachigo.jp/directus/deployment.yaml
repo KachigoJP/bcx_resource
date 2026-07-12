@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: directus
+  namespace: default
+  labels:
+    app: directus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: directus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: directus
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: directus
+        image: directus/directus:12.1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8055
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: directus-config
+        - secretRef:
+            name: directus-secret
+        readinessProbe:
+          httpGet:
+            path: /server/ping
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /server/ping
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 6
+        startupProbe:
+          httpGet:
+            path: /server/ping
+            port: http
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
