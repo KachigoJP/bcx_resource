@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: flowise
-        image: flowiseai/flowise:latest
+        image: flowiseai/flowise:3.1.3
         imagePullPolicy: Always
         command:
         - /bin/sh
@@ -37,6 +37,13 @@ spec:
             name: flowise-config
         - secretRef:
             name: flowise-secret
+        env:
+        - name: NODE_OPTIONS
+          value: --require=/opt/aws-sdk-patch/remove-x-amz-tagging.cjs
+        volumeMounts:
+        - name: aws-sdk-patch
+          mountPath: /opt/aws-sdk-patch
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /api/v1/ping
@@ -67,3 +74,7 @@ spec:
           limits:
             cpu: "1"
             memory: 2Gi
+      volumes:
+      - name: aws-sdk-patch
+        configMap:
+          name: flowise-aws-sdk-patch

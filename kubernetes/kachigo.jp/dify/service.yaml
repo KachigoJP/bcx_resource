@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-service
+  namespace: default
+  labels:
+    app: dify-web
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-web
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-api-service
+  namespace: default
+  labels:
+    app: dify-api
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-api
+  ports:
+  - name: http
+    port: 5001
+    targetPort: 5001
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-redis-service
+  namespace: default
+  labels:
+    app: dify-redis
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-sandbox-service
+  namespace: default
+  labels:
+    app: dify-sandbox
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-sandbox
+  ports:
+  - port: 8194
+    targetPort: 8194
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-plugin-daemon-service
+  namespace: default
+  labels:
+    app: dify-plugin-daemon
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-plugin-daemon
+  ports:
+  - name: http
+    port: 5002
+    targetPort: 5002
+    protocol: TCP
+  - name: debug
+    port: 5003
+    targetPort: 5003
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-agent-backend-service
+  namespace: default
+  labels:
+    app: dify-agent-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-agent-backend
+  ports:
+  - port: 5050
+    targetPort: 5050
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-ssrf-proxy-service
+  namespace: default
+  labels:
+    app: dify-ssrf-proxy
+spec:
+  type: ClusterIP
+  selector:
+    app: dify-ssrf-proxy
+  ports:
+  - name: http
+    port: 3128
+    targetPort: 3128
+    protocol: TCP

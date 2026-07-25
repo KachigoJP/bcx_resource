@@ -17,7 +17,8 @@ data:
   EXECUTIONS_DATA_PRUNE: "true"
   EXECUTIONS_DATA_MAX_AGE: "336"
   DB_TYPE: postgresdb
-  DB_POSTGRESDB_HOST: "cloudsql-proxy"
+  DB_POSTGRESDB_HOST: "ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech"
   DB_POSTGRESDB_PORT: "5432"
   DB_POSTGRESDB_DATABASE: "n8n"
-  DB_POSTGRESDB_USER: "n8n-user"
+  DB_POSTGRESDB_USER: "neondb_owner"
+  DB_POSTGRESDB_SSL_ENABLED: "true"

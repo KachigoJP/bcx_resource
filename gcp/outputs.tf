@@ -1,15 +1,11 @@
-output "api_gateway_url" {
-  value = module.api_gateway.api_gateway_url
-}
-
 output "kubernetes_cluster" {
   value = module.kubernetes.cluster_endpoint
 }
 
-output "cloud_sql_instance" {
-  value = module.cloud_sql.instance_name
+output "vcp_network_id" {
+  value = module.vpc.network_id
 }
 
-output "cloud_sql_connection_name" {
-  value = module.cloud_sql.connection_name
+output "vcp_self_link" {
+  value = module.vpc.self_link
 }

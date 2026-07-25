@@ -16,6 +16,7 @@ data:
   DB_USER: directus-user
   DB_SSL: "false"
   AI_ENABLED: "true"
+  MCP_OAUTH_ENABLED: "true"
   STORAGE_LOCATIONS: s3
   STORAGE_S3_DRIVER: s3
   STORAGE_S3_BUCKET: kachigo-directus
