@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: affine-migration
+  namespace: default
+  labels:
+    app: affine-migration
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: affine-migration
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: affine-migration
+        image: ghcr.io/toeverything/affine:stable
+        imagePullPolicy: Always
+        command:
+        - sh
+        - -c
+        - node ./scripts/self-host-predeploy.js
+        envFrom:
+        - configMapRef:
+            name: affine-config
+        - secretRef:
+            name: affine-secret
+        env:
+        - name: DATABASE_URL
+          value: postgresql://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_DATABASE)?sslmode=$(DB_SSL_MODE)
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi

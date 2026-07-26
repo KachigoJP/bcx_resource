@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: affine
+  namespace: default
+  labels:
+    app: affine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: affine
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: affine
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: affine
+        image: ghcr.io/toeverything/affine:0.27.2
+        imagePullPolicy: Always
+        command:
+        - sh
+        - -c
+        - node ./dist/main.js 2>&1 | grep -E 'WARN|ERROR|Error|error|Exception|exception|Unhandled|unhandled'
+        ports:
+        - name: http
+          containerPort: 3010
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: affine-config
+        - secretRef:
+            name: affine-secret
+        env:
+        - name: DATABASE_URL
+          value: postgresql://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_DATABASE)?sslmode=$(DB_SSL_MODE)
+        volumeMounts:
+        - name: affine-config
+          mountPath: /root/.affine/config/config.json
+          subPath: config.json
+          readOnly: true
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 6
+        startupProbe:
+          httpGet:
+            path: /
+            port: http
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
+      volumes:
+      - name: affine-config
+        secret:
+          secretName: affine-secret
+          items:
+          - key: config.json
+            path: config.json

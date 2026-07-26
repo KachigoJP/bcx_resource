@@ -18,7 +18,7 @@ spec:
     - flowise.kachigo.jp
     - browserless.kachigo.jp
     - directus.kachigo.jp
-    - dify.kachigo.jp
+    - affine.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -41,16 +41,6 @@ spec:
             name: flowise-service
             port:
               number: 80
-  - host: dify.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: dify-service
-            port:
-              number: 80
   - host: browserless.kachigo.jp
     http:
       paths:
@@ -69,6 +59,16 @@ spec:
         backend:
           service:
             name: directus-service
+            port:
+              number: 80
+  - host: affine.kachigo.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: affine-service
             port:
               number: 80
   - host: keycloak.kachigo.jp

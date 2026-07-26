@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: affine-config
+  namespace: default
+data:
+  TZ: Asia/Tokyo
+  NODE_ENV: production
+  LOG_LEVEL: warn
+  PORT: "3010"
+  AFFINE_SERVER_EXTERNAL_URL: https://affine.kachigo.jp
+  AFFINE_INDEXER_ENABLED: "false"
+  REDIS_SERVER_HOST: redis-service
+  DB_HOST: "ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech"
+  DB_PORT: "5432"
+  DB_USERNAME: affine
+  DB_DATABASE: affine
+  DB_SSL_MODE: require
