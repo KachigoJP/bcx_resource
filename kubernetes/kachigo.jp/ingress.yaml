@@ -10,15 +10,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - n8n.kachigo.jp
-    - flowise.kachigo.jp
-    - browserless.kachigo.jp
-    - directus.kachigo.jp
-    - affine.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -31,53 +28,3 @@ spec:
             name: n8n-service
             port:
               number: 80
-  - host: flowise.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: flowise-service
-            port:
-              number: 80
-  - host: browserless.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: browserless-service
-            port:
-              number: 3000
-  - host: directus.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: directus-service
-            port:
-              number: 80
-  - host: affine.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: affine-service
-            port:
-              number: 80
-  - host: keycloak.kachigo.jp
-    http:
-      paths:
-      - backend:
-          service:
-            name: keycloak-service
-            port:
-              number: 80
-        path: /
-        pathType: Prefix

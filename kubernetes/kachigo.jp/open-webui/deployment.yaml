@@ -1,52 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: affine
+  name: open-webui
   namespace: default
   labels:
-    app: affine
+    app: open-webui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: affine
+      app: open-webui
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: affine
+        app: open-webui
     spec:
       securityContext:
         fsGroup: 1000
       containers:
-      - name: affine
-        image: ghcr.io/toeverything/affine:0.27.2
+      - name: open-webui
+        image: ghcr.io/open-webui/open-webui:main
         imagePullPolicy: Always
-        command:
-        - sh
-        - -c
-        - node ./dist/main.js 2>&1 | grep -Ev '(^|[[:space:]])(DEBUG|VERBOSE|LOG)([[:space:]]|$)'
         ports:
         - name: http
-          containerPort: 3010
+          containerPort: 8080
           protocol: TCP
         envFrom:
         - configMapRef:
-            name: affine-config
+            name: open-webui-config
         - secretRef:
-            name: affine-secret
+            name: open-webui-secret
         env:
         - name: DATABASE_URL
           value: postgresql://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_DATABASE)?sslmode=$(DB_SSL_MODE)
+        - name: PGVECTOR_DB_URL
+          value: postgresql://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_DATABASE)?sslmode=$(DB_SSL_MODE)
         volumeMounts:
-        - name: affine-config
-          mountPath: /root/.affine/config/config.json
-          subPath: config.json
-          readOnly: true
+        - name: open-webui-data
+          mountPath: /app/backend/data
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: http
           initialDelaySeconds: 30
           timeoutSeconds: 5
@@ -54,7 +50,7 @@ spec:
           failureThreshold: 6
         livenessProbe:
           httpGet:
-            path: /
+            path: /health
             port: http
           initialDelaySeconds: 120
           timeoutSeconds: 5
@@ -62,22 +58,19 @@ spec:
           failureThreshold: 6
         startupProbe:
           httpGet:
-            path: /
+            path: /health
             port: http
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 30
         resources:
           requests:
-            cpu: 250m
+            cpu: 500m
             memory: 512Mi
           limits:
-            cpu: "1"
+            cpu: "2"
             memory: 2Gi
       volumes:
-      - name: affine-config
-        secret:
-          secretName: affine-secret
-          items:
-          - key: config.json
-            path: config.json
+      - name: open-webui-data
+        persistentVolumeClaim:
+          claimName: open-webui-data

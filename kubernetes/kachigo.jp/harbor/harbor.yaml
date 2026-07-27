@@ -1,0 +1,36 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    certSource: secret
+    secret:
+      secretName: kachigo-tls-secret
+  ingress:
+    className: nginx
+    hosts:
+      core: harbor.kachigo.jp
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+
+externalURL: https://harbor.kachigo.jp
+
+database:
+  type: external
+  external:
+    host: ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech
+    port: 5432
+    username: harbor
+    password: ""
+    existingSecret: harbor-secret
+    coreDatabase: harbor
+    sslmode: require
+
+redis:
+  type: external
+  external:
+    addr: redis.default.svc.cluster.local:6379
+    username: ""
+    password: ""

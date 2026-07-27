@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: redis-data
+  name: open-webui-data
   namespace: default
 spec:
   accessModes:

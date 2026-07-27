@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-core
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: harbor-core.harbor.svc.cluster.local
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-portal
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: harbor-portal.harbor.svc.cluster.local
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
