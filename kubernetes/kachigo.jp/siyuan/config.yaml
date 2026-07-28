@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: siyuan-config
+  namespace: default
+data:
+  TZ: Asia/Tokyo
+  PUID: "1000"
+  PGID: "1000"
+  SIYUAN_WORKSPACE_PATH: /siyuan/workspace
+  SIYUAN_LANG: en

@@ -5,9 +5,10 @@ metadata:
 data:
   NODE_ENV: "production"
   DATABASE_CLIENT: "postgres"
-  DATABASE_HOST: "cloudsql-proxy"
+  DATABASE_HOST: "ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech"
   DATABASE_NAME: "banchanxanh"
   DATABASE_PORT: "5432"
+  DATABASE_SSL: "true"
   HOST: "0.0.0.0"
   PORT: "1337"
   UPLOAD_PROVIDER: "aws-s3"

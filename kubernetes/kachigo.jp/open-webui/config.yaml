@@ -7,19 +7,25 @@ data:
   TZ: Asia/Tokyo
   PORT: "8080"
   WEBUI_NAME: Open WebUI
-  WEBUI_URL: https://open-webui.kachigo.jp
+  WEBUI_URL: https://ai.kachigo.jp
+  CORS_ALLOW_ORIGIN: https://ai.kachigo.jp
+  USER_AGENT: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
   ENV: prod
   ENABLE_SIGNUP: "false"
   DEFAULT_USER_ROLE: pending
   ENABLE_PERSISTENT_CONFIG: "true"
   ENABLE_VERSION_UPDATE_CHECK: "false"
   DO_NOT_TRACK: "true"
+  RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
+  RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
   DATABASE_ENABLE_SESSION_SHARING: "true"
-  DB_HOST: cloudsql-proxy
+  DB_HOST: "ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech"
   DB_PORT: "5432"
   DB_DATABASE: open-webui
-  DB_USERNAME: open-webui-user
-  DB_SSL_MODE: disable
+  DB_USERNAME: open-webui
+  DB_SSL_MODE: require
+  PGSSLMODE: require
+  PGCHANNELBINDING: require
   STORAGE_PROVIDER: s3
   STORAGE_LOCAL_CACHE: "false"
   S3_BUCKET_NAME: kachigo-open-webui
