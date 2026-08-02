@@ -21,6 +21,7 @@ spec:
     - appflowy.kachigo.jp
     - gotrue.kachigo.jp
     - flowise.kachigo.jp
+    - litellm.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
   - host: n8n.kachigo.jp
@@ -104,3 +105,13 @@ spec:
             name: gotrue-service
             port:
               number: 9999
+  - host: litellm.kachigo.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: litellm-service
+            port:
+              number: 80

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config-file
+data:
+  LITELLM_MODE: "PRODUCTION"
+  LITELLM_LOG: "ERROR"
+  STORE_MODEL_IN_DB: "true"
