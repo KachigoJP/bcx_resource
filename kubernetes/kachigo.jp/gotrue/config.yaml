@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gotrue-config
+  namespace: default
+data:
+  TZ: Asia/Tokyo
+  GOTRUE_SITE_URL: https://gotrue.kachigo.jp
+  GOTRUE_URI_ALLOW_LIST: "https://*.kachigo.jp"
+  GOTRUE_DISABLE_SIGNUP: "false"
+  GOTRUE_JWT_EXP: "7200"
+  GOTRUE_JWT_ADMIN_GROUP_NAME: supabase_admin
+  GOTRUE_DB_DRIVER: postgres
+  API_EXTERNAL_URL: https://gotrue.kachigo.jp
+  PORT: "9999"
+  GOTRUE_MAILER_AUTOCONFIRM: "false"
+  GOTRUE_SMTP_MAX_FREQUENCY: 1ns
+  GOTRUE_RATE_LIMIT_EMAIL_SENT: "100"
+  GOTRUE_MAILER_URLPATHS_CONFIRMATION: /gotrue/verify
+  GOTRUE_MAILER_URLPATHS_INVITE: /gotrue/verify
+  GOTRUE_MAILER_URLPATHS_RECOVERY: /gotrue/verify
+  GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /gotrue/verify

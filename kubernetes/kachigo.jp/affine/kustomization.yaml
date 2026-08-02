@@ -13,7 +13,7 @@ secretGenerator:
   namespace: default
   behavior: merge
   files:
-  - config.json=credential.json
+  - config.json=config.json
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appflowy-config
+  namespace: default
+data:
+  TZ: Asia/Tokyo
+  RUST_LOG: info
+  APPFLOWY_ENVIRONMENT: production
+  APPFLOWY_BASE_URL: https://appflowy.kachigo.jp
+  APPFLOWY_WEB_URL: https://appflowy.kachigo.jp
+  APPFLOWY_GOTRUE_BASE_URL: http://gotrue-service:9999
+  APPFLOWY_WEBSOCKET_BASE_URL: wss://appflowy.kachigo.jp/ws
+  APPFLOWY_REDIS_URI: redis://redis:6379
+  APPFLOWY_WORKER_REDIS_URL: redis://redis:6379
+  APPFLOWY_WORKER_ENVIRONMENT: production
+  APPFLOWY_WORKER_DATABASE_NAME: appflowy
+  APPFLOWY_WORKER_IMPORT_TICK_INTERVAL: "30"
+  APPFLOWY_SEARCH_HOST: 0.0.0.0
+  APPFLOWY_SEARCH_PORT: "4002"
+  APPFLOWY_SEARCH_SERVICE_URL: http://appflowy-search-service:4002
+  APPFLOWY_SEARCH_REQUEST_TIMEOUT_SECS: "10"
+  APPFLOWY_BACKGROUND_INDEXER_ENABLED: "true"
+  APPFLOWY_INDEXER_DATABASE_ENABLED: "false"
+  APPFLOWY_KEYWORD_SEARCH_ENABLED: "true"
+  APPFLOWY_KEYWORD_WORKER_ENABLED: "true"
+  APPFLOWY_KEYWORD_INDEX_MAP_SIZE_BYTES: "2147483648"
+  APPFLOWY_KEYWORD_INDEX_DIR: /var/lib/appflowy/keyword_index
+  APPFLOWY_S3_CREATE_BUCKET: "false"
+  APPFLOWY_S3_USE_MINIO: "false"
+  APPFLOWY_S3_BUCKET: replace-with-s3-bucket
+  APPFLOWY_S3_REGION: ap-northeast-1
+  APPFLOWY_ACCESS_CONTROL: "true"
+  APPFLOWY_DATABASE_MAX_CONNECTIONS: "40"
+  AI_ENABLED: "true"
+  AI_SERVER_HOST: appflowy-ai-service
+  AI_SERVER_PORT: "5001"
+  APPFLOWY_MAILER_SMTP_TLS_KIND: opportunistic

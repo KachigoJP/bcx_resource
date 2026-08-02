@@ -14,11 +14,11 @@ data:
   DISABLE_FLOWISE_TELEMETRY: "true"
   LOG_LEVEL: error
   DATABASE_TYPE: postgres
-  DATABASE_HOST: 'cloudsql-proxy'
+  DATABASE_HOST: 'ep-delicate-frost-ajuljjor-pooler.c-3.us-east-2.aws.neon.tech'
   DATABASE_PORT: "5432"
   DATABASE_NAME: 'flowise'
-  DATABASE_USER: 'flowise-user'
-  DATABASE_SSL: "false"
+  DATABASE_USER: 'flowise'
+  DATABASE_SSL: "true"
   STORAGE_TYPE: s3
   S3_STORAGE_BUCKET_NAME: 'kachigo-flowise'
   S3_STORAGE_REGION: 'us-east-005'

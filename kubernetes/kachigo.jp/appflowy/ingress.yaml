@@ -1,68 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kachigo-ingress
+  name: appflowy-routing
   namespace: default
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "5g"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "2g"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - n8n.kachigo.jp
-    - ai.kachigo.jp
-    - siyuan.kachigo.jp
     - appflowy.kachigo.jp
     - gotrue.kachigo.jp
-    - flowise.kachigo.jp
     secretName: kachigo-tls-secret
   rules:
-  - host: n8n.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: n8n-service
-            port:
-              number: 80
-  - host: flowise.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: flowise-service
-            port:
-              number: 80
-  - host: ai.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: open-webui-service
-            port:
-              number: 80
-  - host: siyuan.kachigo.jp
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: siyuan-service
-            port:
-              number: 80
   - host: appflowy.kachigo.jp
     http:
       paths:

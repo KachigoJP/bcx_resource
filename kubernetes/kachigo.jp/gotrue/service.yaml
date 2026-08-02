@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotrue-service
+  namespace: default
+  labels:
+    app: gotrue
+spec:
+  type: ClusterIP
+  selector:
+    app: gotrue
+  ports:
+  - port: 9999
+    targetPort: 9999
+    protocol: TCP

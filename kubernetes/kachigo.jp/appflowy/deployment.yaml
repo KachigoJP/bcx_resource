@@ -1,0 +1,254 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-cloud
+  namespace: default
+  labels:
+    app: appflowy-cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy-cloud
+  template:
+    metadata:
+      labels:
+        app: appflowy-cloud
+    spec:
+      containers:
+      - name: appflowy-cloud
+        image: appflowyinc/appflowy_cloud:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: appflowy-config
+        - secretRef:
+            name: appflowy-secret
+        env:
+        - name: APPFLOWY_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-secret
+              key: APPFLOWY_DATABASE_URL
+        - name: APPFLOWY_GOTRUE_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-secret
+              key: GOTRUE_JWT_SECRET
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: http
+          initialDelaySeconds: 45
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 12
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 6
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: "2"
+            memory: 4Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-worker
+  namespace: default
+  labels:
+    app: appflowy-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy-worker
+  template:
+    metadata:
+      labels:
+        app: appflowy-worker
+    spec:
+      containers:
+      - name: appflowy-worker
+        image: appflowyinc/appflowy_worker:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: appflowy-config
+        - secretRef:
+            name: appflowy-secret
+        env:
+        - name: APPFLOWY_WORKER_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-secret
+              key: APPFLOWY_WORKER_DATABASE_URL
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-search
+  namespace: default
+  labels:
+    app: appflowy-search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy-search
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: appflowy-search
+    spec:
+      containers:
+      - name: appflowy-search
+        image: appflowyinc/appflowy_search:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 4002
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: appflowy-config
+        - secretRef:
+            name: appflowy-secret
+        env:
+        - name: APPFLOWY_SEARCH_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-secret
+              key: APPFLOWY_SEARCH_DATABASE_URL
+        - name: APPFLOWY_GOTRUE_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-secret
+              key: GOTRUE_JWT_SECRET
+        volumeMounts:
+        - name: search-data
+          mountPath: /var/lib/appflowy/keyword_index
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 2Gi
+      volumes:
+      - name: search-data
+        persistentVolumeClaim:
+          claimName: appflowy-search-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-admin-frontend
+  namespace: default
+  labels:
+    app: appflowy-admin-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy-admin-frontend
+  template:
+    metadata:
+      labels:
+        app: appflowy-admin-frontend
+    spec:
+      containers:
+      - name: admin-frontend
+        image: appflowyinc/admin_frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        env:
+        - name: APPFLOWY_GOTRUE_BASE_URL
+          value: http://gotrue-service:9999
+        - name: APPFLOWY_BASE_URL
+          value: http://appflowy-cloud-service:8000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-web
+  namespace: default
+  labels:
+    app: appflowy-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy-web
+  template:
+    metadata:
+      labels:
+        app: appflowy-web
+    spec:
+      containers:
+      - name: appflowy-web
+        image: appflowyinc/appflowy_web:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        env:
+        - name: APPFLOWY_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: appflowy-config
+              key: APPFLOWY_BASE_URL
+        - name: APPFLOWY_GOTRUE_BASE_URL
+          value: https://appflowy.kachigo.jp/gotrue
+        - name: APPFLOWY_WS_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: appflowy-config
+              key: APPFLOWY_WEBSOCKET_BASE_URL
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 20
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 6
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi

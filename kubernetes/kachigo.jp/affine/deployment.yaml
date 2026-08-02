@@ -26,7 +26,7 @@ spec:
         command:
         - sh
         - -c
-        - node ./dist/main.js 2>&1 | grep -Ev '(^|[[:space:]])(DEBUG|VERBOSE|LOG)([[:space:]]|$)'
+        - node ./dist/main.js 2>&1 | awk 'BEGIN { spam = "(doc\\.recordPendingDocUpdatesCount|doc\\.findEmptySummaryDocs|inviteAbuse\\.executePendingActions)" } skip && /^[[:space:]]*}/ { skip = 0; next } skip { next } $0 ~ spam { next } /\[Locker\].*trying to lock resource doc:update:/ { next } /^\[Nest\].*Object\([0-9]+\) \{/ { skip = 1; next } { print; fflush() }'
         ports:
         - name: http
           containerPort: 3010

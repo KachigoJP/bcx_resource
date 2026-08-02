@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotrue
+  namespace: default
+  labels:
+    app: gotrue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gotrue
+  template:
+    metadata:
+      labels:
+        app: gotrue
+    spec:
+      containers:
+      - name: gotrue
+        image: appflowyinc/gotrue:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 9999
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: gotrue-config
+        - secretRef:
+            name: gotrue-secret
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: gotrue-secret
+              key: GOTRUE_DATABASE_URL
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 12
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 6
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi
